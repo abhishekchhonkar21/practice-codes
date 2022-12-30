@@ -61,7 +61,7 @@ public:
     //otherwise
     node* temp = head;
     for(int jump=1;jump<pos-1;jump++){
-        temp->next;
+        temp = temp->next;
     }
     node* n= new node(data);
     n->next = temp->next;
