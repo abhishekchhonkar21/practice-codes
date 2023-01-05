@@ -29,6 +29,8 @@ int main(){
 
 #ifndef stack_h
 #define stack_h
+
+
 template<typename T>class stack;
 
 template<typename T>
@@ -69,5 +71,7 @@ template<typename T>class stack{
             delete temp;
         }}
 };
+
+
 
 #endif /* stack_h */
