@@ -1,0 +1,54 @@
+//main program
+
+#include<iostream>
+#include "vect.h"
+
+using namespace std;
+int main(){
+    stack<int> k;
+    
+    k.push(1);
+    k.push(2);
+    k.push(3);
+    
+    while(!k.empty()){
+        cout<<k.top()<<endl;
+        k.pop();
+    }
+    cout<<endl;
+    return 0;
+}
+
+
+//vect.h header file
+
+
+
+#ifndef vect_h
+#define vect_h
+
+#include<vector>
+using namespace std;
+
+template<typename T>
+class stack{
+    vector<T> arr;
+public:
+    void push(T data){
+        arr.push_back(data);
+    }
+    
+    void pop(){
+        arr.pop_back();
+    }
+    T top(){
+        int lastidx = arr.size()-1;
+        return arr[lastidx];
+    }
+    bool empty(){
+        return arr.size()==0;
+    }
+};
+
+
+#endif /* vect_h */
