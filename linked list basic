@@ -45,7 +45,7 @@ class list{
     }
     else{
         node*n = new node(data);
-            n->next = head;
+            tail->next = n;
             tail=n;
     }
     
