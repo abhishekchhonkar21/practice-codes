@@ -1,0 +1,72 @@
+#include<iostream>
+using namespace std;
+class Queue{
+    int *arr;
+    int currentSize;
+    int maxSize;
+    
+    int front;
+    int rear;
+    
+public:
+    Queue(int defaultSize = 5){
+        maxSize = defaultSize;
+        arr = new int[maxSize];
+        currentSize = 0;
+        front = 0;
+        rear = maxSize - 1;
+    }
+    
+    bool full(){
+        return currentSize == maxSize;
+    }
+    bool empty(){
+        return currentSize == 0;
+    }
+    
+    void push(int data){
+        if(!full()){
+            //take the rear to the next index;
+            rear = (rear+1) % maxSize;
+            arr[rear] = data;
+            currentSize++;
+        }
+    }
+    
+    void pop(){
+        if(!empty()){
+            //take the front pointer forward
+            front = (front+1) % maxSize;
+            currentSize--;
+        }
+    }
+    
+    int getfront(){
+        return arr[front];
+    }
+    
+};
+
+
+int main(){
+    
+    Queue Q;
+    Q.push(1);
+    Q.push(2);
+    Q.push(3);
+    Q.push(4);
+    Q.push(5);
+    Q.push(6);
+    Q.push(7);
+    Q.push(8);
+    Q.pop();
+    Q.pop();
+    Q.push(9);
+    
+    while(!Q.empty()){
+        cout<<Q.getfront()<<endl;
+        Q.pop();
+    }
+    return 0;
+    
+}
