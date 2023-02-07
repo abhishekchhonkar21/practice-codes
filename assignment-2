@@ -1,1 +1,931 @@
+//Q4-for a given linked list write a program to perform the following function
+//i. display the element of LL
+     #include<iostream>
+    using namespace std;
+
+    class list;
+    class node{
+         public:
+       int data;
+       node* next;
+      
+       
+       node(int d):data(d),next(NULL){};
+       int getdata(){
+           return data;
+       }
+       
+        
+       friend class list;
+       
+    };
+
+    class list{
+    public:
+        node* head;
+        node* tail;
+        
+        
+        
+        list():head(NULL),tail(NULL){}
+        
+        node*begin(){
+            return head;
+        }
+        
+        void push_front(int data){
+            if(head==NULL){
+                node*n = new node(data);
+                head = tail = n;
+            }
+            else{
+                node*n = new node(data);
+                n->next = head;
+                head=n;
+            }
+        }
+        void push_back(int data){
+            if(head==NULL){
+                node* n = new node(data);
+                head = tail = n;
+            }
+            else{
+                node* n = new node(data);
+                tail->next = n;
+                tail=n;
+            }
+            
+        }
+        void insert(int data,int pos){
+            if(pos==0){
+                push_front(data);
+                return;
+                
+            }
+            
+        
+        //otherwise
+        node* temp = head;
+        for(int jump=1;jump<pos-1;jump++){
+            temp->next;
+        }
+        node* n= new node(data);
+        n->next = temp->next;
+        temp->next=n;
+        
+        
+    }
+        
+      
+        void pop_front(){
+            node* temp = head;
+            head = head->next;
+            temp->next = NULL;
+            delete temp;
+        }
+        
+        void pop_back(){
+            
+            node* temp1 = head;
+            node* temp2 = head;
+            while(temp1->next!=NULL){
+                temp2=temp1;
+                temp1=temp1->next;
+            }
+            temp2->next=NULL;
+            delete temp1;
+            
+        }
+        
+       
+    };
+
+
+
+    int main(){
+          list l;
+        l.push_front(1);
+        l.push_front(12);
+        l.push_back(2);
+        l.push_back(3);
+        l.push_back(4);
+        l.insert(45, 2);
+        
+       
+       
+        
+        node* head = l.begin();
+        
+        while(head!=NULL){
+            cout<<head->getdata()<<"->"<<endl;
+            head=head->next;
+        } 
+    }
+    
+    //ii- count and sum of the the node of LL
+    #include<iostream>
+using namespace std;
+
+class list;
+class node{
+     public:
+   int data;
+   node* next;
+  
+   
+   node(int d):data(d),next(NULL){};
+   int getdata(){
+       return data;
+   }
+   
+    
+   friend class list;
+   
+};
+
+class list{
+public:
+    node* head;
+    node* tail;
+    
+    
+    
+    list():head(NULL),tail(NULL){}
+    
+    node*begin(){
+        return head;
+    }
+    
+    void push_front(int data){
+        if(head==NULL){
+            node*n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node*n = new node(data);
+            n->next = head;
+            head=n;
+        }
+    }
+    void push_back(int data){
+        if(head==NULL){
+            node* n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node* n = new node(data);
+            tail->next = n;
+            tail=n;
+        }
+        
+    }
+    void insert(int data,int pos){
+        if(pos==0){
+            push_front(data);
+            return;
+            
+        }
+        
+    
+    //otherwise
+    node* temp = head;
+    for(int jump=1;jump<pos-1;jump++){
+        temp->next;
+    }
+    node* n= new node(data);
+    n->next = temp->next;
+    temp->next=n;
+    
+    
+}
+    
+  
+    void pop_front(){
+        node* temp = head;
+        head = head->next;
+        temp->next = NULL;
+        delete temp;
+    }
+    
+    void pop_back(){
+        
+        node* temp1 = head;
+        node* temp2 = head;
+        while(temp1->next!=NULL){
+            temp2=temp1;
+            temp1=temp1->next;
+        }
+        temp2->next=NULL;
+        delete temp1;
+        
+    }
+    
+   
+};
+
+
+
+int sum(node* head){
+    
+    int s = 0;
+    node* p = head;
+    while(p!=NULL){
+        s = s + p->getdata();
+        p=p->next;
+    }
+    return s;
+}
+int count(node* head){
+    
+    int n=0;
+    node* c = head;
+    while(c!=NULL){
+        n=n+1;
+        c=c->next;
+    }
+    return n;
+}
+
+int main(){
+      list l;
+    l.push_front(1);
+    l.push_front(12);
+    l.push_back(2);
+    l.push_back(3);
+    l.push_back(4);
+    
+    node* head = l.begin();
+    
+    int sumoflist = sum(head);
+    int k = count(head);
+    
+    while(head!=NULL){
+        cout<<head->getdata()<<"->";
+        head=head->next;
+    }
+    cout<<endl;
+    cout<<"the sum of the node is "<<sumoflist<<" and the number of node is "<<k;
+   
+   
+    
+}
+
+// iii- search a key element in LL
+#include<iostream>
+using namespace std;
+
+class list;
+class node{
+     public:
+   int data;
+   node* next;
+  
+   
+   node(int d):data(d),next(NULL){};
+   int getdata(){
+       return data;
+   }
+   
+    
+   friend class list;
+   
+};
+
+class list{
+public:
+    node* head;
+    node* tail;
+    
+    
+    
+    list():head(NULL),tail(NULL){}
+    
+    node*begin(){
+        return head;
+    }
+    
+    void push_front(int data){
+        if(head==NULL){
+            node*n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node*n = new node(data);
+            n->next = head;
+            head=n;
+        }
+    }
+    void push_back(int data){
+        if(head==NULL){
+            node* n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node* n = new node(data);
+            tail->next = n;
+            tail=n;
+        }
+        
+    }
+    void insert(int data,int pos){
+        if(pos==0){
+            push_front(data);
+            return;
+            
+        }
+        
+    
+    //otherwise
+    node* temp = head;
+    for(int jump=1;jump<pos-1;jump++){
+        temp->next;
+    }
+    node* n= new node(data);
+    n->next = temp->next;
+    temp->next=n;
+    
+    
+}
+    
+  
+    void pop_front(){
+        node* temp = head;
+        head = head->next;
+        temp->next = NULL;
+        delete temp;
+    }
+    
+    void pop_back(){
+        
+        node* temp1 = head;
+        node* temp2 = head;
+        while(temp1->next!=NULL){
+            temp2=temp1;
+            temp1=temp1->next;
+        }
+        temp2->next=NULL;
+        delete temp1;
+        
+    }
+    
+    
+   
+};
+
+int search(node* head, int x){
+        node* p = head;
+        
+        int count = 1;
+        while(p!=NULL){
+            if(p->getdata()==x){
+                break;
+            }
+            count++;
+            p=p->next;
+        }
+        return count;
+    }
+
+int main(){
+      list l;
+    l.push_front(1);
+    l.push_front(12);
+    l.push_back(2);
+    l.push_back(3);
+    l.push_back(4);
+    
+    node* head = l.begin();
+    
+    int num = search(head, 3);
+    //listreverse(head);
+    while(head!=NULL){
+        cout<<head->getdata()<<"->";
+        head=head->next;
+    }
+    cout<<endl;
+    
+    cout<<"the number is at the position "<<num<<endl;;
+    
+}
+
+// iv- delete an element from an array
+#include<iostream>
+using namespace std;
+
+class list;
+class node{
+     public:
+   int data;
+   node* next;
+  
+   
+   node(int d):data(d),next(NULL){};
+   int getdata(){
+       return data;
+   }
+   
+    
+   friend class list;
+   
+};
+
+class list{
+public:
+    node* head;
+    node* tail;
+    
+    
+    
+    list():head(NULL),tail(NULL){}
+    
+    node*begin(){
+        return head;
+    }
+    
+    void push_front(int data){
+        if(head==NULL){
+            node*n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node*n = new node(data);
+            n->next = head;
+            head=n;
+        }
+    }
+    void push_back(int data){
+        if(head==NULL){
+            node* n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node* n = new node(data);
+            tail->next = n;
+            tail=n;
+        }
+        
+    }
+    void insert(int data,int pos){
+        if(pos==0){
+            push_front(data);
+            return;
+            
+        }
+        
+    
+    //otherwise
+    node* temp = head;
+    for(int jump=1;jump<pos-1;jump++){
+        temp->next;
+    }
+    node* n= new node(data);
+    n->next = temp->next;
+    temp->next=n;
+    
+    
+}
+    
+  
+    void pop_front(){
+        node* temp = head;
+        head = head->next;
+        temp->next = NULL;
+        delete temp;
+    }
+    
+    void pop_back(){
+        
+        node* temp1 = head;
+        node* temp2 = head;
+        while(temp1->next!=NULL){
+            temp2=temp1;
+            temp1=temp1->next;
+        }
+        temp2->next=NULL;
+        delete temp1;
+        
+    }
+    
+   
+};
+
+
+
+int main(){
+      list l;
+    l.push_front(1);
+    l.push_front(12);
+    l.push_back(2);
+    l.push_back(3);
+    l.push_back(4);
+    l.insert(45, 2);
+    l.pop_back();
+    l.pop_front();
+   
+   
+    
+    node* head = l.begin();
+    //listreverse(head);
+    while(head!=NULL){
+        cout<<head->getdata()<<"->"<<endl;
+        head=head->next;
+    }
+    
+   
+   
+    
+}
+
+//v-check if LL is sorted
+#include<iostream>
+using namespace std;
+
+class list;
+class node{
+     public:
+   int data;
+   node* next;
+  
+   
+   node(int d):data(d),next(NULL){};
+   int getdata(){
+       return data;
+   }
+   
+    
+   friend class list;
+   
+};
+
+class list{
+public:
+    node* head;
+    node* tail;
+    
+    
+    
+    list():head(NULL),tail(NULL){}
+    
+    node*begin(){
+        return head;
+    }
+    
+    void push_front(int data){
+        if(head==NULL){
+            node*n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node*n = new node(data);
+            n->next = head;
+            head=n;
+        }
+    }
+    void push_back(int data){
+        if(head==NULL){
+            node* n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node* n = new node(data);
+            tail->next = n;
+            tail=n;
+        }
+        
+    }
+    void insert(int data,int pos){
+        if(pos==0){
+            push_front(data);
+            return;
+            
+        }
+        
+    
+    //otherwise
+    node* temp = head;
+    for(int jump=1;jump<pos-1;jump++){
+        temp->next;
+    }
+    node* n= new node(data);
+    n->next = temp->next;
+    temp->next=n;
+    
+    
+}
+    
+  
+    void pop_front(){
+        node* temp = head;
+        head = head->next;
+        temp->next = NULL;
+        delete temp;
+    }
+    
+    void pop_back(){
+        
+        node* temp1 = head;
+        node* temp2 = head;
+        while(temp1->next!=NULL){
+            temp2=temp1;
+            temp1=temp1->next;
+        }
+        temp2->next=NULL;
+        delete temp1;
+        
+    }
+    
+    
+   
+};
+
+int sortCheck(node* head){
+       
+    node* temp1 = head;
+    node* temp2 = head;
+    
+    while(temp2!=NULL){
+        temp1 = temp2;
+        temp2=temp2->next;
+        
+        if(temp1->getdata()>temp2->getdata()){
+            return -1;
+        }
+    }
+    return 0;
+    }
+
+int main(){
+      list l;
+    l.push_front(1);
+    l.push_front(12);
+    l.push_back(2);
+    l.push_back(3);
+    l.push_back(4);
+    
+    node* head = l.begin();
+    
+    int num = sortCheck(head);
+    //listreverse(head);
+    while(head!=NULL){
+        cout<<head->getdata()<<"->";
+        head=head->next;
+    }
+    cout<<endl;
+    
+    if(num == -1){
+        cout<<"the list is not sorted "<<endl;
+    }
+    else{
+        cout<<"the list is sorted"<<endl;
+    }
+    
+}
+
+//viii- reverse a LL
+#include<iostream>
+using namespace std;
+
+class list;
+class node{
+     public:
+   int data;
+   node* next;
+  
+   
+   node(int d):data(d),next(NULL){};
+   int getdata(){
+       return data;
+   }
+   
+    
+   friend class list;
+   
+};
+
+class list{
+public:
+    node* head;
+    node* tail;
+    
+    
+    
+    list():head(NULL),tail(NULL){}
+    
+    node*begin(){
+        return head;
+    }
+    
+    void push_front(int data){
+        if(head==NULL){
+            node*n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node*n = new node(data);
+            n->next = head;
+            head=n;
+        }
+    }
+    void push_back(int data){
+        if(head==NULL){
+            node* n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node* n = new node(data);
+            tail->next = n;
+            tail=n;
+        }
+        
+    }
+    void insert(int data,int pos){
+        if(pos==0){
+            push_front(data);
+            return;
+            
+        }
+        
+    
+    //otherwise
+    node* temp = head;
+    for(int jump=1;jump<pos-1;jump++){
+        temp->next;
+    }
+    node* n= new node(data);
+    n->next = temp->next;
+    temp->next=n;
+    
+    
+}
+    
+  
+    void pop_front(){
+        node* temp = head;
+        head = head->next;
+        temp->next = NULL;
+        delete temp;
+    }
+    
+    void pop_back(){
+        
+        node* temp1 = head;
+        node* temp2 = head;
+        while(temp1->next!=NULL){
+            temp2=temp1;
+            temp1=temp1->next;
+        }
+        temp2->next=NULL;
+        delete temp1;
+        
+    }
+    
+   
+};
+
+void listreverse(node* &head){
+    node* cur = head;
+    node* prev = NULL;
+    node* nxt;
+    
+    while(cur!=NULL){
+        //save the next node
+        nxt = cur->next;
+        //make the current node point to previous
+        cur->next = prev;
+        //update prev and cur, take them 1 step forward
+        prev = cur;
+        cur = nxt;
+        
+    }
+    head = prev;
+}
+
+
+int main(){
+      list l;
+    l.push_front(1);
+    l.push_front(12);
+    l.push_back(2);
+    l.push_back(3);
+    l.push_back(4);
+    l.insert(45, 2);
+    node* head1 = l.begin();
+    
+    
+    while(head1!=NULL){
+        cout<<head1->getdata()<<"->";
+        head1=head1->next;
+    }
+    
+    cout<<endl;
+    
+    node* head2 = l.begin();
+    listreverse(head2);
+   
+    
+    while(head2!=NULL){
+        cout<<head2->getdata()<<"->";
+        head2=head2->next;
+    }
+    
+}
+
+
+
+
+//Q3- for a given array write a function for the following
+//i-finding a single element in a array
+#include <iostream>
+using namespace std;
+
+int find(int arr[], int n, int x){
+    for(int i=0; i<n; i++){
+        if(arr[i]==x){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int main(){
+    
+    int a,k;
+       cin>>a>>k;
+       int arr1[a];
+       for(int i=0; i<a; i++){
+           cin>>arr1[i];
+       }
+            
+       
+       int t = find(arr1, a, k);
+           
+           if(t==-1){
+               cout<<"the number is not in the array";
+           }
+           else{
+               cout<<"the number exist in the array at the index "<<t;
+           }
+}
+
+
+//ii- finding multiple elements in a array
+
+
+
+//iii- finding duplicated in a sorted array
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> duplicate( vector<int> &arr){
+    
+    vector<int>v;
+    sort(arr.begin(),arr.end());
+    
+    int n = arr.size();
+    for(int i=0; i<n-1; i++){
+        for(int j=i+1; j<n; j++){
+            
+            if(arr[i]==arr[j]){
+                v.push_back(arr[i]);
+                
+                while(arr[i]!=arr[i+1]){
+                    i++;
+                }
+                i++;
+                break;
+                
+            }
+           
+            
+        }
+    }
+
+    
+                       return v;
+}
+
+
+int main(){
+    
+    int size;
+    cin>>size;
+    vector<int>array;
+    for(int i=0; i<size; i++){
+        int x;
+        cin>>x;
+        array.push_back(x);
+    }
+    
+    vector<int> s;
+    s=duplicate(array);
+    
+    for (auto& it : s) {
+      
+            
+            cout << it << ' ';
+        }
+    
+}
+
+    
 
