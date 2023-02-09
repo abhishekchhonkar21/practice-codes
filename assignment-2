@@ -408,7 +408,7 @@ int main(){
     
 }
 
-// iv- delete an element from an array
+// iv- delete an element from an LL
 #include<iostream>
 using namespace std;
 
@@ -680,6 +680,193 @@ int main(){
     }
     
 }
+
+//vi- merge two LL
+
+#include<iostream>
+using namespace std;
+
+class list;
+class node{
+     public:
+   int data;
+   node* next;
+  
+   
+   node(int d):data(d),next(NULL){};
+   int getdata(){
+       return data;
+   }
+   
+   friend class list;
+   
+};
+
+class list{
+public:
+    node* head;
+    node* tail;
+    
+    
+    
+    list():head(NULL),tail(NULL){}
+    
+    node*begin(){
+        return head;
+    }
+    
+    void push_front(int data){
+        if(head==NULL){
+            node*n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node*n = new node(data);
+            n->next = head;
+            head=n;
+        }
+    }
+    void push_back(int data){
+        if(head==NULL){
+            node* n = new node(data);
+            head = tail = n;
+        }
+        else{
+            node* n = new node(data);
+            tail->next = n;
+            tail=n;
+        }
+        
+    }
+    void insert(int data,int pos){
+        if(pos==0){
+            push_front(data);
+            return;
+            
+        }
+        
+    
+    //otherwise
+    node* temp = head;
+    for(int jump=1;jump<pos-1;jump++){
+        temp->next;
+    }
+    node* n= new node(data);
+    n->next = temp->next;
+    temp->next=n;
+    
+    
+}
+    
+    
+    void pop_front(){
+        node* temp = head;
+        head = head->next;
+        temp->next = NULL;
+        delete temp;
+    }
+    
+    void pop_back(){
+        
+        node* temp1 = head;
+        node* temp2 = head;
+        while(temp1->next!=NULL){
+            temp2=temp1;
+            temp1=temp1->next;
+        }
+        temp2->next=NULL;
+        delete temp1;
+        
+    }
+    
+};
+
+node* mergeL(node* &head1,node* &head2){
+    
+    node*n = new node(-1);
+     
+    node*  p = n;
+    node* p1 = head1;
+    node* p2 = head2;
+    
+    while(p1!=NULL and p2!=NULL){
+        
+        if(p1->getdata() <= p2->getdata()){
+            p->next = p1;
+            
+            p1=p1->next;
+        }
+        
+        else{
+            p->next = p2;
+        
+            p2=p2->next;
+        }
+        p=p->next;
+
+    }
+    
+    while(p1!=NULL){
+        p->next=p1;
+        p1=p1->next;
+        p=p->next;
+    }
+    while(p2!=NULL){
+        p->next=p2;
+        p2=p2->next;
+        p=p->next;
+    }
+    
+    
+    return n->next;
+}
+
+
+
+int main(){
+      list l,L;
+    l.push_back(1);
+    l.push_back(12);
+    l.push_back(23);
+    l.push_back(34);
+    l.push_back(55);
+    
+    node* head1 = l.begin();
+    node* x =head1;
+    while(x!=NULL){
+        cout<<x->getdata()<<"->";
+        x=x->next;
+    }
+    cout<<endl;
+   
+    L.push_back(10);
+    L.push_back(24);
+    L.push_back(37);
+    L.push_back(40);
+    L.push_back(59);
+    
+    node* head2 = L.begin();
+    node* y = head2;
+    
+    while(y!=NULL){
+        cout<<y->getdata()<<"->";
+        y=y->next;
+    }
+    
+    
+    cout<<endl;
+    cout<<"the merged linkedlist is "<<endl;
+    node* head =mergeL(head1, head2);
+    
+    while(head!=NULL){
+        cout<<head->getdata()<<"->";
+        head=head->next;
+    }
+    return 0;
+}
+
+
+
 
 //viii- reverse a LL
 #include<iostream>
@@ -1167,6 +1354,7 @@ int main(){
 }
 
 //ii- merge two arrays
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -1218,6 +1406,8 @@ int main(){
    
    vector<int>v = merge(arr1, arr2, n1, n2);
    
+   
+   
    for (auto& it : v) {
           
                 cout << it << ' ';
@@ -1225,6 +1415,78 @@ int main(){
    
 }
 
+
+
+//iii- union and intersection of two arrays
+
+#include<iostream>
+
+using namespace std;
+
+void intersection(int arr1[], int arr2[], int m, int n)
+{
+    int i = 0, j = 0;
+    while (i < m and j < n) {
+        if (i > 0 && arr1[i] == arr1[i - 1]) {
+            i++;
+            continue;
+        }
+        if (arr1[i] < arr2[j])
+            i++;
+        else if (arr2[j] < arr1[i])
+            j++;
+        else
+        {
+            cout << arr2[j] << " ";
+            i++;
+            j++;
+        }
+    }
+}
+void Union(int arr1[], int arr2[], int m, int n)
+{
+    int i = 0, j = 0;
+    while (i < m and j < n) {
+        if (arr1[i] < arr2[j])
+            cout << arr1[i++] << " ";
+ 
+        else if (arr2[j] < arr1[i])
+            cout << arr2[j++] << " ";
+ 
+        else {
+            cout << arr2[j++] << " ";
+            i++;
+        }
+    }
+ 
+    
+    while (i < m)
+        cout << arr1[i++] << " ";
+ 
+    while (j < n)
+        cout << arr2[j++] << " ";
+}
+
+int main(){
+ 
+    int n,m;
+    cin>>n>>m;
+    
+    int arr1[n],arr2[m];
+    
+    for(int i=0; i<n; i++){
+        cin>>arr1[i];
+    }
+    for(int i=0; i<m; i++){
+        cin>>arr2[i];
+    }
+    cout<<"the union is "<<endl;
+    Union(arr1, arr2, n, m);
+    cout<<endl;
+    cout<<"the intersection is "<<endl;
+    intersection(arr1, arr2, n, m);
+    
+}
 
 
 
