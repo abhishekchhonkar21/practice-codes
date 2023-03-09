@@ -1,0 +1,86 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+class Queue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Queue() {
+        front = NULL;
+        rear = NULL;
+    }
+
+    void enqueue(int value) {
+        Node* n = new Node();
+        n->data = value;
+        n->next = NULL;
+
+        if (front == NULL && rear == NULL) {
+            front = rear = n;
+            return;
+        }
+
+        rear->next = n;
+        rear = n;
+    }
+
+    void dequeue() {
+        if (front == NULL) {
+            return;
+        }
+
+        Node* temp = front;
+
+        if (front == rear) {
+            front = rear = NULL;
+        } else {
+            front = front->next;
+        }
+
+        delete temp;
+    }
+
+    int peek() {
+        if (front == NULL) {
+            return -1;
+        }
+
+        return front->data;
+    }
+
+    bool isEmpty() {
+        return (front == NULL && rear == NULL);
+    }
+};
+
+int main() {
+    Queue q;
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+
+    cout << q.peek() << endl; // Output: 10
+
+    q.dequeue();
+    cout << q.peek() << endl; // Output: 20
+
+    q.dequeue();
+    cout << q.peek() << endl; // Output: 30
+
+    q.dequeue();
+
+    if (q.isEmpty()) {
+        cout << "Queue is empty" << endl; // Output: Queue is empty
+    }
+
+    return 0;
+}
+
