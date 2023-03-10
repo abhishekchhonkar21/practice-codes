@@ -1,0 +1,79 @@
+#include<iostream>
+using namespace std;
+
+
+
+const int ms = 100;
+
+class Pqueue{
+    
+public:
+    
+   
+    
+    int arr[ms], rear;
+    
+    Pqueue(){
+        rear = -1;
+    }
+    
+    bool isfull(){
+       return rear == ms-1;
+    }
+    
+    bool isEmpty(){
+       return rear == -1;
+    }
+    
+    void enqueue(int data){
+        
+          int i = rear;
+         
+         while(i>=0 and arr[rear]>data){
+         arr[i+1] =arr[i];
+         i--;
+         }
+         arr[i+1] = data;
+         rear++;
+        rear++;
+        arr[rear] = data;
+        
+       // BS(arr, rear+1);
+        
+    }
+    
+    int dequeue(){
+        int x = arr[0];
+        for(int i=0; i<rear; i++){
+            arr[i]=arr[i+1];
+        }
+        rear--;
+        return x;
+    }
+};
+
+int main(){
+    
+    Pqueue pq;
+
+        // Enqueue elements to the priority queue
+        pq.enqueue(4);
+        pq.enqueue(2);
+        pq.enqueue(6);
+        pq.enqueue(1);
+        pq.enqueue(5);
+
+        // Dequeue elements from the priority queue
+        cout << pq.dequeue() << endl; // Output: 1
+        cout << pq.dequeue() << endl; // Output: 2
+        cout << pq.dequeue() << endl; // Output: 4
+
+        // Enqueue more elements to the priority queue
+        pq.enqueue(3);
+        pq.enqueue(7);
+
+        // Dequeue remaining elements from the priority queue
+        while (!pq.isEmpty()) {
+            cout << pq.dequeue() << endl;
+        }
+}
