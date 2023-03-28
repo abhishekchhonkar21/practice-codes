@@ -1,0 +1,68 @@
+#include<iostream>
+using namespace std;
+
+//define a tree node structure
+class treenode{
+public:
+    int data;
+    treenode* left;
+    treenode* right;
+};
+
+//create a new node with given value
+treenode* creatnode(int data){
+    
+    treenode* newNode = new treenode;
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+//insert a new node with given value in the tree
+void insertNode(treenode* &root, int value){
+    if(root == NULL){
+        root = creatnode(value);
+        return;
+    }
+    
+    if(value < root->data){
+        insertNode(root->left, value);
+    }
+    else{
+        insertNode(root->right, value);
+    }
+}
+
+//traverse the tree in order and print each value
+void inorderTraversal(treenode* root){
+    if(root == NULL){
+        return;
+    }
+    
+    inorderTraversal(root->left);
+    cout<<root->data<<" ";
+    inorderTraversal(root->right);
+}
+
+int main(){
+    
+    // Create an empty tree
+        treenode* root = nullptr;
+
+        // Insert some nodes into the tree
+        insertNode(root, 5);
+        insertNode(root, 3);
+        insertNode(root, 7);
+        insertNode(root, 2);
+        insertNode(root, 4);
+        insertNode(root, 6);
+        insertNode(root, 8);
+
+        // Print the values in the tree in order
+        inorderTraversal(root);
+
+        return 0;
+    
+}
+
