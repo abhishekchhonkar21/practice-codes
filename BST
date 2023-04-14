@@ -1,0 +1,129 @@
+#include<iostream>
+using namespace std;
+
+class node{
+public:
+    int key;
+    node* left;
+    node* right;
+    
+    node(int data){
+        left = right = NULL;
+        key = data;
+    }
+};
+
+node* insert(node* root,int data){
+    if(root==NULL){
+        return new node(data);
+    }
+    
+    //recursive case
+    if(data<root->key){
+        root->left = insert(root->left,data);
+    }
+    else{
+        root->right = insert(root->right,data);
+    }
+    
+    return root;
+}
+
+void inorderTraversal(node* root){
+    if(root == NULL){
+        return;
+    }
+    
+    inorderTraversal(root->left);
+    cout<<root->key<<" ";
+    inorderTraversal(root->right);
+}
+
+bool search(node* root, int x){
+    
+    if(root==NULL){
+        return false;
+    }
+    if(root->key==x){
+        return true;
+    }
+    if(x<root->key){
+       return search(root->left,x);
+    }
+    return search(root->right,x);
+    
+}
+
+node* findMin(node* root){
+    while(root->left!=NULL){
+        root=root->left;
+    }
+    return root;
+}
+
+node* findMax(node* root){
+    while(root->right!=NULL){
+        root=root->right;
+    }
+    return root;
+}
+
+
+node* remove(node* root, int x){
+    //intitial part is just the searh part
+    if(root==NULL){
+        return NULL;
+    }
+    
+    else if(x<root->key){
+        root->left = remove(root->left,x);
+    }
+    else if(x>root->key){
+        root->right = remove(root->right,x);
+    }
+    
+    else{
+        //when the current node matches the key
+        
+        //case1: no children
+        if(root->left==NULL and root->right==NULL){
+            delete root;
+            root = NULL;
+            return root;
+        }
+        //case2:single child
+        if(root->right==NULL){
+            node* temp = root;
+            root = root->right;
+            delete temp;
+        }
+        //case3: 2 children
+        else{
+            node* temp = findMin(root->right);
+            root->key = temp->key;
+            root->right = remove(root->right, temp->key);
+        }
+    }
+    
+    return root;
+    
+}
+
+int main(){
+  
+    
+    node * root = NULL;
+    int arr[] = {8,3,10,1,6,14,4,7,13};
+    
+    for(int x: arr){
+    root = insert(root, x);
+    }
+    
+    inorderTraversal(root);
+    cout<<endl;
+    remove(root,3);
+    inorderTraversal(root);
+    cout<<endl;
+    cout<<findMax(root)->key;
+    return 0;
+}
