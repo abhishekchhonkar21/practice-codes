@@ -1,68 +1,57 @@
-#include <iostream>
-#include <vector>
+#include<iostream>
+#include<vector>
 
 using namespace std;
 
-class Graph {
+class graph{
 private:
-    int V; // number of vertices
-    vector<vector<int>> adjMatrix; // adjacency matrix
-    void DFSUtil(int v, vector<bool>& visited); // recursive helper function for DFS
+    int V;
+    vector<vector<int>>adjList;
 
 public:
-    // constructor to create a graph with given number of vertices
-    Graph(int vertices) {
+    graph(int vertices){
         V = vertices;
-        adjMatrix.resize(V, vector<int>(V, 0)); // initialize adjacency matrix with all zeros
+        adjList.resize(V);
     }
+    void addEdge(int v, int w){
+        adjList[v].push_back(w);
+        adjList[w].push_back(v);
 
-    // function to add an edge to the graph
-    void addEdge(int v, int w) {
-        adjMatrix[v][w] = 1; // mark edge in the adjacency matrix
-        adjMatrix[w][v] = 1; // mark edge in the adjacency matrix
     }
-
-    // function to print the graph represented by the adjacency matrix
-    void printGraph() {
-        cout << "Adjacency matrix of the graph:\n";
-        for (int i = 0; i < V; i++) {
-            for (int j = 0; j < V; j++) {
-                cout << adjMatrix[i][j] << " ";
+    void print(){
+        for(int i = 0; i<V; i++){
+            cout<<i<<":";
+            for(int j=0;j<adjList[i].size();j++){
+                cout<<adjList[i][j]<<" ";
             }
-            cout << endl; // move to next line for next row
+            cout<<endl;
         }
     }
 
-    // function to perform DFS traversal of the graph
-    void DFS(int start) {
-        // create a visited array to keep track of visited vertices
-        vector<bool> visited(V, false);
+    void DFSUtil(int vertex, vector<bool>& visited){
+        visited[vertex] = true;
+        cout<<vertex<<" ";
 
-        // call the recursive helper function to perform DFS
-        DFSUtil(start, visited);
-    }
-
-    // recursive helper function for DFS
-    void DFSUtil(int v, vector<bool>& visited) {
-        // mark the current vertex as visited and print it
-        visited[v] = true;
-        cout << v << " ";
-
-        // recursively visit all adjacent vertices that haven't been visited yet
-        for (int i = 0; i < V; i++) {
-            if (adjMatrix[v][i] && !visited[i]) {
-                DFSUtil(i, visited);
+        for(int i=0; i<adjList[vertex].size(); i++){
+            int neighbour = adjList[vertex][i];
+            if(!visited[neighbour]){
+                DFSUtil(neighbour, visited);
             }
         }
     }
 
-    // destructor to free dynamically allocated memory
-    ~Graph() {}
+    void DFS(int startvertex){
+        vector<bool>visited(V,false);
+        cout << "DFS starting from vertex " << startvertex << ": ";
+        DFSUtil(startvertex, visited);
+        cout<<endl;
+    }
 };
+
 
 int main() {
     // create a graph with 5 vertices
-    Graph g(5);
+    graph g(5);
 
     // add edges to the graph
     g.addEdge(0, 1);
@@ -73,12 +62,12 @@ int main() {
     g.addEdge(2, 3);
     g.addEdge(3, 4);
 
-    // print the graph represented by the adjacency matrix
-    g.printGraph();
+    // print the graph represented by the adjacency list
+    g.print();
 
-    // perform DFS traversal of the graph starting from vertex 0
-    cout << "DFS traversal starting from vertex 0: ";
-    g.DFS(0);
+    // perform DFS starting from vertex 2
+    g.DFS(2);
 
     return 0;
 }
+
