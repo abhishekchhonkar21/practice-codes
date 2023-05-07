@@ -1,0 +1,89 @@
+#include<iostream>
+#include<vector>
+
+using namespace std;
+
+class graph{
+private:
+    int V;
+    vector<vector<int>> adjMatrix; // adjacency matrix to represent edges and weights
+
+public:
+    graph(int vertices){
+        V = vertices;
+        adjMatrix.resize(V, vector<int>(V, INT_MAX)); // initialize all weights to infinity
+    }
+
+    void addEdge(int v, int w, int weight){ // add edge with weight
+        adjMatrix[v][w] = weight;
+        adjMatrix[w][v] = weight;
+    }
+
+    void print(){
+        for(int i = 0; i<V; i++){
+            cout<<i<<": ";
+            for(int j=0;j<V;j++){
+                if(adjMatrix[i][j] == INT_MAX){
+                    cout<<"INF"<<" "; // print INF for non-existent edges
+                }
+                else{
+                    cout<<adjMatrix[i][j]<<" "; // print the weights for existing edges
+                }
+            }
+            cout<<endl;
+        }
+    }
+
+    void floydWarshall(){
+        vector<vector<int>> dist(adjMatrix); // initialize the distance matrix with the adjacency matrix
+
+        for(int k=0; k<V; k++){
+            for(int i=0; i<V; i++){
+                for(int j=0; j<V; j++){
+                    if(dist[i][k] == INT_MAX || dist[k][j] == INT_MAX){
+                        continue; // skip if the intermediate vertex is unreachable
+                    }
+                    if(dist[i][j] > dist[i][k] + dist[k][j]){ // if the distance through k is less than the current distance
+                        dist[i][j] = dist[i][k] + dist[k][j]; // update the distance
+                    }
+                }
+            }
+        }
+
+        cout << "Shortest distances between all pairs of vertices: " << endl;
+        for(int i = 0; i<V; i++){
+            for(int j = 0; j<V; j++){
+                if(dist[i][j] == INT_MAX){
+                    cout << "INF" << " "; // print INF for non-existent edges
+                }
+                else{
+                    cout << dist[i][j] << " "; // print the weights for existing edges
+                }
+            }
+            cout << endl;
+        }
+    }
+};
+
+
+int main() {
+    // create a graph with 5 vertices
+    graph g(5);
+
+    // add edges with weights to the graph
+    g.addEdge(0, 1, 1);
+    g.addEdge(0, 4, 4);
+    g.addEdge(1, 2, 2);
+    g.addEdge(1, 3, 4);
+    g.addEdge(1, 4, 2);
+    g.addEdge(2, 3, 1);
+    g.addEdge(3, 4, 3);
+
+    // print the graph represented by the adjacency matrix
+    g.print();
+
+    // perform Floyd-Warshall algorithm
+    g.floydWarshall();
+
+    return 0;
+}
