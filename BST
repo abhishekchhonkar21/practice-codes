@@ -1,104 +1,118 @@
 #include<iostream>
 using namespace std;
 
-class node{
+class node {
 public:
     int key;
     node* left;
     node* right;
     
-    node(int data){
+    node(int data) {
         left = right = NULL;
         key = data;
     }
 };
 
-node* insert(node* root,int data){
-    if(root==NULL){
+node* insert(node* root, int data) {
+    if (root == NULL) {
         return new node(data);
     }
     
-    //recursive case
-    if(data<root->key){
-        root->left = insert(root->left,data);
-    }
-    else{
-        root->right = insert(root->right,data);
+    // recursive case
+    if (data < root->key) {
+        root->left = insert(root->left, data);
+    } else {
+        root->right = insert(root->right, data);
     }
     
     return root;
 }
 
-void inorderTraversal(node* root){
-    if(root == NULL){
+void inorderTraversal(node* root) {
+    if (root == NULL) {
         return;
     }
     
     inorderTraversal(root->left);
-    cout<<root->key<<" ";
+    cout << root->key << " ";
     inorderTraversal(root->right);
 }
 
-bool search(node* root, int x){
+void preorderTraversal(node* root) {
+    if (root == NULL) {
+        return;
+    }
     
-    if(root==NULL){
+    cout << root->key << " ";
+    preorderTraversal(root->left);
+    preorderTraversal(root->right);
+}
+
+void postorderTraversal(node* root) {
+    if (root == NULL) {
+        return;
+    }
+    
+    postorderTraversal(root->left);
+    postorderTraversal(root->right);
+    cout << root->key << " ";
+}
+
+bool search(node* root, int x) {
+    if (root == NULL) {
         return false;
     }
-    if(root->key==x){
+    
+    if (root->key == x) {
         return true;
     }
-    if(x<root->key){
-       return search(root->left,x);
-    }
-    return search(root->right,x);
     
+    if (x < root->key) {
+        return search(root->left, x);
+    }
+    
+    return search(root->right, x);
 }
 
-node* findMin(node* root){
-    while(root->left!=NULL){
-        root=root->left;
+node* findMin(node* root) {
+    while (root->left != NULL) {
+        root = root->left;
     }
+    
     return root;
 }
 
-node* findMax(node* root){
-    while(root->right!=NULL){
-        root=root->right;
+node* findMax(node* root) {
+    while (root->right != NULL) {
+        root = root->right;
     }
+    
     return root;
 }
 
-
-node* remove(node* root, int x){
-    //intitial part is just the searh part
-    if(root==NULL){
+node* remove(node* root, int x) {
+    if (root == NULL) {
         return NULL;
     }
     
-    else if(x<root->key){
-        root->left = remove(root->left,x);
-    }
-    else if(x>root->key){
-        root->right = remove(root->right,x);
+    else if (x < root->key) {
+        root->left = remove(root->left, x);
+    } else if (x > root->key) {
+        root->right = remove(root->right, x);
     }
     
-    else{
-        //when the current node matches the key
-        
-        //case1: no children
-        if(root->left==NULL and root->right==NULL){
+    else {
+        if (root->left == NULL && root->right == NULL) {
             delete root;
             root = NULL;
             return root;
         }
-        //case2:single child
-        if(root->right==NULL){
+        
+        if (root->right == NULL) {
             node* temp = root;
-            root = root->right;
+            root = root->left;
             delete temp;
-        }
-        //case3: 2 children
-        else{
+        } else {
             node* temp = findMin(root->right);
             root->key = temp->key;
             root->right = remove(root->right, temp->key);
@@ -106,24 +120,35 @@ node* remove(node* root, int x){
     }
     
     return root;
-    
 }
 
-int main(){
-  
+int main() {
+    node* root = NULL;
+    int arr[] = {8, 3, 10, 1, 6, 14, 4, 7, 13};
     
-    node * root = NULL;
-    int arr[] = {8,3,10,1,6,14,4,7,13};
-    
-    for(int x: arr){
-    root = insert(root, x);
+    for (int x : arr) {
+        root = insert(root, x);
     }
     
+    cout << "Inorder traversal: ";
     inorderTraversal(root);
-    cout<<endl;
-    remove(root,3);
+    cout << endl;
+    
+    cout << "Preorder traversal: ";
+    preorderTraversal(root);
+    cout << endl;
+    
+    cout << "Postorder traversal: ";
+    postorderTraversal(root);
+    cout <<endl;
+    remove(root, 3);
+    
+    cout << "Inorder traversal after removing 3: ";
     inorderTraversal(root);
-    cout<<endl;
-    cout<<findMax(root)->key;
+    cout << endl;
+    
+    cout << "Maximum value in the tree: " << findMax(root)->key << endl;
+    
     return 0;
 }
+
