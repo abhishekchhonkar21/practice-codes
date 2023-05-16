@@ -93,34 +93,33 @@ node* findMax(node* root) {
 node* remove(node* root, int x) {
     if (root == NULL) {
         return NULL;
-    }
-    
-    else if (x < root->key) {
+    } else if (x < root->key) {
         root->left = remove(root->left, x);
     } else if (x > root->key) {
         root->right = remove(root->right, x);
-    }
-    
-    else {
+    } else {
+        // When the current node matches the key
         if (root->left == NULL && root->right == NULL) {
             delete root;
-            root = NULL;
-            return root;
-        }
-        
-        if (root->right == NULL) {
-            node* temp = root;
-            root = root->left;
-            delete temp;
+            return NULL;
+        } else if (root->left == NULL) {
+            node* temp = root->right;
+            delete root;
+            return temp;
+        } else if (root->right == NULL) {
+            node* temp = root->left;
+            delete root;
+            return temp;
         } else {
-            node* temp = findMin(root->right);
-            root->key = temp->key;
-            root->right = remove(root->right, temp->key);
+            // Node has two children
+            node* minRight = findMin(root->right);
+            root->key = minRight->key;
+            root->right = remove(root->right, minRight->key);
         }
     }
-    
     return root;
 }
+
 
 int main() {
     node* root = NULL;
