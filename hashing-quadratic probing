@@ -3,101 +3,84 @@ using namespace std;
 
 const int max_size = 1000;
 
-class node{
-public:
-    int key;
-    int value;
-    node* next;
-};
-
-class HashTable{
+class HashTable {
     
 private:
-    node* table[max_size]; // array of pointers to nodes
-    int hash(int key){
-        return key % max_size; // hash function
-    }
+    int keys[max_size];
+    int values[max_size];
     
 public:
-    HashTable(){ // constructor
-        for(int i = 0; i<max_size; i++){ // initialize all pointers to NULL
-            table[i] = NULL;
+    HashTable() {
+        // constructor initializes all keys and values to -1
+        for (int i = 0; i < max_size; i++) {
+            keys[i] = -1;
+            values[i] = -1;
         }
     }
     
-    void insert(int Key,int Value){ // insert method
-        
-        int index = hash(Key); // compute index based on key
-        int i = 0;
-        while(table[(index+i*i)%max_size]!=NULL && table[(index+i*i)%max_size]->key!=Key){
-            i++; // increment i until an empty slot is found
-        }
-        if(table[(index+i*i)%max_size]!=NULL){
-            // if the key already exists in the hash table, update the value
-            table[(index+i*i)%max_size]->value = Value;
-            return;
-        }
-        // create a new node and add it to the hash table
-        node* n = new node;
-        n->key = Key;
-        n->value = Value;
-        n->next = NULL;
-        table[(index+i*i)%max_size] = n;
+    int hash(int key) {
+        // hash function to determine the index of the key in the table
+        return key % max_size;
     }
     
-    int get(int Key){ // get method
-        
-        int index = hash(Key); // compute index based on key
-        int i = 0;
-        while(table[(index+i*i)%max_size]!=NULL){
-            if(table[(index+i*i)%max_size]->key == Key){
-                // if the key is found in the hash table, return the corresponding value
-                return table[(index+i*i)%max_size]->value;
-            }
-            i++; // increment i until an empty slot is found
+    void insert(int Key, int Value) {
+        int index = hash(Key);
+        int i = 1;
+        while (keys[index] != -1) {
+            // if the index is already occupied, probe using quadratic probing
+            index = (index + i * i) % max_size;
+            i++;
         }
-        // if the key is not found in the hash table, return -1
-        return -1;
+        keys[index] = Key;
+        values[index] = Value;
     }
     
-    void remove(int Key){ // remove method
-        
-        int index = hash(Key); // compute index based on key
-        int i = 0;
-        while(table[(index+i*i)%max_size]!=NULL){
-            if(table[(index+i*i)%max_size]->key == Key){
-                node* temp = table[(index+i*i)%max_size];
-                table[(index+i*i)%max_size] = NULL;
-                delete temp;
-                i++;
-                while(table[(index+i*i)%max_size]!=NULL){
-                    // re-insert all the nodes that were displaced by the deleted node
-                    node* n = table[(index+i*i)%max_size];
-                    table[(index+i*i)%max_size] = NULL;
-                    insert(n->key,n->value);
-                    delete n;
-                    i++;
-                }
-                return;
-            }
-            i++; // increment i until an empty slot is found
+    int get(int Key) {
+        int index = hash(Key);
+        int i = 1;
+        while (keys[index] != Key && keys[index] != -1) {
+            // if the key is not found, probe using quadratic probing
+            index = (index + i * i) % max_size;
+            i++;
+        }
+        if (keys[index] == Key) {
+            return values[index];
+        } else {
+            return -1; // Key not found
+        }
+    }
+    
+    void remove(int Key) {
+        int index = hash(Key);
+        int i = 1;
+        while (keys[index] != Key && keys[index] != -1) {
+            // if the key is not found, probe using quadratic probing
+            index = (index + i * i) % max_size;
+            i++;
+        }
+        if (keys[index] == Key) {
+            keys[index] = -1;
+            values[index] = -1;
+        } else {
+            cout << "Key not found in table" << endl;
         }
     }
 };
 
-int main(){
-    
-    class HashTable ht; // create a hash table object
-    ht.insert(1, 13);
+int main() {
+    HashTable ht;
+    ht.insert(1, 180);
     ht.insert(2, 240);
-    ht.insert(3, 301);
+    ht.insert(3, 310);
     
-    cout << ht.get(1) << endl; // should print 13
-    cout << ht.get(2) << endl; // should print 240
-    cout << ht.get(3) << endl; // should print 301
+    cout << ht.get(1) << endl;
+    cout << ht.get(2) << endl;
+    cout << ht.get(3) << endl;
     
     ht.remove(2);
     
-    cout << ht.get(1) << endl; // should print 13
+    cout << ht.get(1) << endl;
     cout << ht.get(2) << endl;
+    
+    return 0;
 }
