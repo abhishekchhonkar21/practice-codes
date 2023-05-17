@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <climits>
+
+using namespace std;
+
+class Graph {
+private:
+    int V;
+    vector<vector<pair<int, int>>> adjList;
+
+public:
+    Graph(int vertices) {
+        V = vertices;
+        adjList.resize(V);
+    }
+
+    void addEdge(int u, int v, int weight) {
+        // Add an edge between vertices u and v with the given weight
+        adjList[u].push_back(make_pair(v, weight));
+        adjList[v].push_back(make_pair(u, weight));
+    }
+
+    void print() {
+        // Print the graph represented by the adjacency list
+        for (int i = 0; i < V; i++) {
+            cout << i << ": ";
+            for (const auto& neighbor : adjList[i]) {
+                cout << "(" << neighbor.first << ", " << neighbor.second << ") ";
+            }
+            cout << endl;
+        }
+    }
+
+    vector<pair<int, int>> primMST(int startVertex) {
+        // Perform Prim's algorithm to find the Minimum Spanning Tree (MST)
+
+        // Initialize data structures
+        vector<pair<int, int>> mst;  // MST edges
+        vector<bool> visited(V, false);  // Track visited vertices
+        vector<int> distance(V, INT_MAX);  // Track minimum distances
+        vector<int> parent(V, -1);  // Track parent vertices in the MST
+
+        map<int, int> pq;  // Map to store vertices and their distances
+
+        distance[startVertex] = 0;  // Distance of start vertex is 0
+        pq[startVertex] = 0;  // Add start vertex to the map
+
+        while (!pq.empty()) {
+            int u = pq.begin()->first;  // Extract vertex with minimum distance
+            pq.erase(pq.begin());  // Remove the vertex from the map
+
+            visited[u] = true;  // Mark the vertex as visited
+
+            for (const auto& neighbor : adjList[u]) {
+                int v = neighbor.first;  // Get the neighbor vertex
+                int weight = neighbor.second;  // Get the weight of the edge
+
+                if (!visited[v] && weight < distance[v]) {
+                    // If the neighbor is not visited and the weight is smaller than the current distance
+
+                    pq.erase(v);  // Remove the neighbor vertex from the map
+                    distance[v] = weight;  // Update the minimum distance
+                    parent[v] = u;  // Set the parent vertex
+                    pq[v] = weight;  // Add the neighbor back to the map with the updated distance
+                }
+            }
+        }
+
+        // Build the MST by adding edges
+        for (int i = 1; i < V; i++) {
+            mst.push_back(make_pair(parent[i], i));
+        }
+
+        return mst;  // Return the MST
+    }
+};
+
+int main() {
+    // Create a graph with 5 vertices
+    Graph g(5);
+    
+    // Add edges to the graph
+    g.addEdge(0, 1, 2);
+    g.addEdge(0, 4, 6);
+    g.addEdge(1, 2, 3);
+    g.addEdge(1, 3, 8);
+    g.addEdge(1, 4, 5);
+    g.addEdge(2, 3, 1);
+    g.addEdge(3, 4, 4);
+    
+    // Print the graph represented by the adjacency list
+    g.print();
+    
+    // Perform Prim's algorithm to find the MST starting from vertex 0
+    vector<pair<int, int>> mst = g.primMST(0);
+    
+    // Print the edges of the MST
+    cout << "Minimum Spanning Tree (Prim's algorithm):" << endl;
+    for (const auto& edge : mst) {
+        cout << edge.first << " - " << edge.second << endl;
+    }
+    
+    return 0;
+}
+
