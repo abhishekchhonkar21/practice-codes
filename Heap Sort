@@ -1,0 +1,59 @@
+#include <iostream>
+using namespace std;
+
+// Function to heapify a subtree rooted at given index
+void heapify(int arr[], int size, int rootIndex) {
+    int largest = rootIndex; // Assume the root as the largest element
+    int leftChild = 2 * rootIndex + 1; // Index of the left child
+    int rightChild = 2 * rootIndex + 2; // Index of the right child
+
+    // If the left child is larger than the root
+    if (leftChild < size && arr[leftChild] > arr[largest])
+        largest = leftChild;
+
+    // If the right child is larger than the current largest
+    if (rightChild < size && arr[rightChild] > arr[largest])
+        largest = rightChild;
+
+    // If the largest element is not the root, swap it with the root
+    if (largest != rootIndex) {
+        swap(arr[rootIndex], arr[largest]);
+
+        // Recursively heapify the affected subtree
+        heapify(arr, size, largest);
+    }
+}
+
+// Function to perform Heap Sort
+void heapSort(int arr[], int size) {
+    // Build a max-heap by rearranging the array
+    for (int i = size / 2 - 1; i >= 0; i--) {
+        heapify(arr, size, i);
+    }
+
+    // Extract elements from the heap one by one
+    for (int i = size - 1; i > 0; i--) {
+        // Move the current root (largest element) to the end
+        swap(arr[0], arr[i]);
+
+        // Call heapify on the reduced heap
+        heapify(arr, i, 0);
+    }
+}
+
+int main() {
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    heapSort(arr, size);
+
+    // Print the sorted array
+    cout << "Sorted array: ";
+    for (int i = 0; i < size; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
