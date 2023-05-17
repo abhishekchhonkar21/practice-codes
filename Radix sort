@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Counting sort function for a specific position (pos) in the numbers
+void countsort(int arr[], int size, int pos) {
+    // Create a count vector with 10 elements and initialize all elements to 0
+    vector<int> count(10, 0);
+
+    // Count the occurrences of each element at the specified position in the input array
+    for (int i = 0; i < size; i++) {
+        count[(arr[i] / pos) % 10]++;
+    }
+
+    // Modify the count vector to store the actual position of each element in the sorted array
+    for (int i = 1; i <= 10; i++) {
+        count[i] = count[i] + count[i - 1];
+    }
+
+    // Create a temporary array to store the sorted output
+    int output[size];
+
+    // Build the sorted array by iterating through the input array from right to left
+    // and placing elements in their correct positions based on the count vector
+    for (int i = size - 1; i >= 0; i--) {
+        output[count[(arr[i] / pos) % 10] - 1] = arr[i];
+        count[(arr[i] / pos) % 10]--;
+    }
+
+    // Copy the sorted elements from the temporary array back to the input array
+    for (int i = 0; i < size; i++) {
+        arr[i] = output[i];
+    }
+}
+
+// Radix sort function
+void radixsort(int arr[], int size) {
+    int maxsize = 0;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] > maxsize) {
+            maxsize = arr[i];
+        }
+    }
+
+    // Perform counting sort for each digit position, starting from the least significant digit
+    for (int pos = 1; maxsize / pos > 0; pos = pos * 10) {
+        countsort(arr, size, pos);
+    }
+}
+
+int main() {
+    int arr[10] = {432, 8, 530, 90, 88, 23, 11, 45, 677, 199};
+
+    radixsort(arr, 10);
+
+    // Print the sorted array
+    for (int i = 0; i < 10; i++) {
+        cout << arr[i] << " ";
+    }
+    return 0;
+}
