@@ -1,32 +1,34 @@
-#include<iostream>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-void countingSort(int arr[], int size) {
+void countsort(int arr[], int size) {
     // Find the maximum element in the array
-    int max_element = arr[0];
-    for (int i = 1; i < size; i++) {
-        if (arr[i] > max_element) {
-            max_element = arr[i];
+    int maxsize = 0;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] > maxsize) {
+            maxsize = arr[i];
         }
     }
 
-    // Create a count array and initialize all elements to 0
-    int count[max_element + 1] = {0};
+    // Create a count vector with size maxsize+1 and initialize all elements to 0
+    vector<int> count(maxsize + 1, 0);
 
     // Count the occurrences of each element in the input array
     for (int i = 0; i < size; i++) {
         count[arr[i]]++;
     }
 
-    // Modify the count array to store the actual position of each element in the sorted array
-    for (int i = 1; i <= max_element; i++) {
-        count[i] += count[i - 1];
+    // Modify the count vector to store the actual position of each element in the sorted array
+    for (int i = 1; i <= maxsize; i++) {
+        count[i] = count[i] + count[i - 1];
     }
 
     // Create a temporary array to store the sorted output
     int output[size];
 
-    // Build the sorted array by iterating through the input array and placing elements in their correct positions
+    // Build the sorted array by iterating through the input array from right to left
+    // and placing elements in their correct positions based on the count vector
     for (int i = size - 1; i >= 0; i--) {
         output[count[arr[i]] - 1] = arr[i];
         count[arr[i]]--;
@@ -39,16 +41,13 @@ void countingSort(int arr[], int size) {
 }
 
 int main() {
-    int arr[] = {4, 2, 2, 8, 3, 3, 1};
-    int size = sizeof(arr) / sizeof(arr[0]);
+    int arr[17] = {2, 1, 1, 0, 2, 5, 4, 0, 2, 8, 7, 7, 9, 2, 0, 1, 9};
 
-    countingSort(arr, size);
+    countsort(arr, 17);
 
-    cout << "Sorted array: ";
-    for (int i = 0; i < size; i++) {
+    // Print the sorted array
+    for (int i = 0; i < 17; i++) {
         cout << arr[i] << " ";
     }
-    cout << endl;
-
     return 0;
 }
