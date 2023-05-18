@@ -1,0 +1,104 @@
+#include<iostream>
+using namespace std;
+
+const int max_size = 1000;
+
+class HashTable{
+    
+private:
+    int keys[max_size];
+    int values[max_size];
+    
+public:
+    HashTable(){
+        // constructor initializes all keys and values to -1
+        for(int i = 0; i<max_size; i++){
+            keys[i] = -1;
+            values[i] = -1;
+        }
+    }
+    
+    int hash(int key){
+        // hash function to determine the index of the key in the table
+        return key % max_size;
+    }
+    int hash2(int key) {
+           return 1 + (key % (max_size - 1));
+       }
+    
+    void insert(int Key,int Value){
+        int v=hash2(Key);
+        int index = hash(Key);
+        
+        if(keys[index] == -1){
+            // if the key is not present in the table, insert it at index
+            keys[index] = Key;
+            values[index] = Value;
+        }
+        else{
+            // if the index is already occupied, probe for the next available index
+            int i=1;
+             i = (index + v*i) % max_size;
+            while(i != index){
+                if(keys[i] == -1){
+                    keys[i] = Key;
+                    values[i] = Value;
+                    return;
+                }
+                i++;
+            }
+            // if no empty index is found, the table is full
+            cout<<"Table is full, cannot insert more elements"<<endl;
+        }
+        
+    }
+    
+    int get(int Key){
+        
+        int index = hash(Key);
+        int v=hash2(Key);
+        
+        if(keys[index] == Key){
+            // if the key is found at index, return its corresponding value
+            return values[index];
+        }
+        else{
+            
+            int i = 1;
+            i = (index + v*i) % max_size;
+            while(i != index){
+                if(keys[i] == Key){
+                    return values[i];
+                }
+                i = (i + 1) % max_size;
+            }
+            // if the key is not found, return -1
+            return -1;
+        }
+        
+    }
+    
+   
+};
+
+
+
+
+int main(){
+    
+    class HashTable ht;
+    ht.insert(1, 180);
+    ht.insert(2, 240);
+    ht.insert(3, 310);
+       
+    cout << ht.get(1) << endl;
+    cout << ht.get(2) << endl;
+    cout << ht.get(3) << endl;
+       
+ 
+       
+    cout << ht.get(1) << endl;
+    cout << ht.get(2) << endl;
+       
+    return 0;
+}
