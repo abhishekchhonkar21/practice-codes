@@ -45,6 +45,32 @@ void inorderTraversal(treenode* root){
     inorderTraversal(root->right);
 }
 
+int maxHeight(treenode* root){
+    if(root==NULL){
+        return 0;
+    }
+    int Lheight = maxHeight(root->left);
+    int Rheight = maxHeight(root->right);
+    
+    return max(Lheight,Rheight)+1;
+}
+
+int diameter(treenode* root){
+    if(root==NULL){
+        return 0;
+    }
+    
+    int Lheight = maxHeight(root->left);
+    int Rheight = maxHeight(root->right);
+    
+    int curDia = Lheight+Rheight+1;
+    
+    int leftdia = diameter(root->left);
+    int rightdia = diameter(root->right);
+    
+    return max(curDia,max(leftdia,rightdia));
+}
+
 int main(){
     
     // Create an empty tree
