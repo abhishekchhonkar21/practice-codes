@@ -9,12 +9,8 @@ private:
 
     // Helper functions
     int parent(int i) {
-    if (i == 0) {
-        return 0;  // Return the same index when i is 0 (root node)
+        return (i - 1) / 2;
     }
-    return (i - 1) / 2;
-}
-
 
     int leftChild(int i) {
         return 2 * i + 1;
@@ -84,18 +80,4 @@ public:
 
 int main() {
     MaxHeap maxHeap;
-    maxHeap.insert(5);
-    maxHeap.insert(10);
-    maxHeap.insert(7);
-    maxHeap.insert(3);
-    maxHeap.insert(8);
-
-    cout << "Max element: " << maxHeap.getMax() << endl;
-
-    int maxVal = maxHeap.extractMax();
-    cout << "Extracted max element: " << maxVal << endl;
-
-    cout << "Max element after extraction: " << maxHeap.getMax() << endl;
-
-    return 0;
-}
+    maxHeap.insert(
