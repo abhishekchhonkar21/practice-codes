@@ -9,8 +9,12 @@ private:
 
     // Helper functions
     int parent(int i) {
-        return (i - 1) / 2;
+    if (i == 0) {
+        return 0;  // Return the same index when i is 0 (root node)
     }
+    return (i - 1) / 2;
+}
+
 
     int leftChild(int i) {
         return 2 * i + 1;
